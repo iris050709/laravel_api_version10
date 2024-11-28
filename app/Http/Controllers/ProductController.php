@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function update(Request $request, $id){
         $products = Product::find($id);
         $products->update($request->all());
-        return response()->json($products);
+        return response()->json(['message' => 'PRODUCTO ACTUALIZADO', 'product' => $products]);
     }
 
     public function show($id){
@@ -26,24 +26,14 @@ class ProductController extends Controller
     public function destroy($id){
         $products = Product::find($id);
         $products->delete();
-        return response()->json(['message' => 'Producto eliminado']);
+        return response()->json(['message' => 'PRODUCTO ELIMINADO']);
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
-        // Validar los datos de entrada
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-        ]);
-
-        // Crear el producto
-        $product = Product::create($validatedData);
-
-        // Retornar el producto creado como respuesta JSON
-        return response()->json($product, 201, ['message' => 'Producto creado']); // 201 es el código HTTP para "Creado"
+        $products = Product::create($request->all());
+        return response()->json(['message' => 'PRODUCTO CREADO', 'product' => $products]);
     }
+
 }
 
