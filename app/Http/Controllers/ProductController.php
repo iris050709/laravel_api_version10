@@ -28,4 +28,22 @@ class ProductController extends Controller
         $products->delete();
         return response()->json(['message' => 'Producto eliminado']);
     }
+
+    public function create(Request $request)
+    {
+        // Validar los datos de entrada
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+        ]);
+
+        // Crear el producto
+        $product = Product::create($validatedData);
+
+        // Retornar el producto creado como respuesta JSON
+        return response()->json($product, 201, ['message' => 'Producto creado']); // 201 es el código HTTP para "Creado"
+    }
 }
+
